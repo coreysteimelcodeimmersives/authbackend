@@ -36,6 +36,7 @@ router.post("/register-user", async (req, res) => {
 
 router.post("/login-user", async (req, res) => {
   try {
+    const collection = await blogsDB().collection("users");
     const user = await collection.findOne({
       username: req.body.username,
     });
