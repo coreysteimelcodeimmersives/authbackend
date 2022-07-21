@@ -47,7 +47,6 @@ router.post("/login-user", async (req, res) => {
     const user = await collection.findOne({
       username: username,
     });
-    console.log(user);
     if (!user) {
       console.log("work?");
       res.json({ success: false }).status(204);
