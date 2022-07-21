@@ -34,6 +34,7 @@ router.post("/register-user", async (req, res) => {
     const userSaveSuccess = await createUser(username, hash);
     res.json({ success: userSaveSuccess }).status(200);
   } catch (error) {
+    console.error(error);
     res.json({ success: error }).status(500);
   }
 });
@@ -46,7 +47,14 @@ router.post("/login-user", async (req, res) => {
     const user = await collection.findOne({
       username: username,
     });
+    console.log(user);
+    if (!user) {
+      console.log("work?");
+      res.json({ success: false }).status(204);
+      return;
+    }
     const match = await bcrypt.compare(password, user.password);
+    console.log(match);
     if (match) {
       const jwtSecretKey = process.env.JWT_SECRET_KEY;
       const data = {
@@ -57,8 +65,9 @@ router.post("/login-user", async (req, res) => {
       res.json({ success: match, token: token }).status(200);
       return;
     }
-    res.json({ success: match }).status(204);
+    res.json({ success: false }).status(204);
   } catch (error) {
+    console.log(error);
     res.json({ success: error }).status(500);
   }
 });
