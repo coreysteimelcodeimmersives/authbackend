@@ -48,12 +48,10 @@ router.post("/login-user", async (req, res) => {
       username: username,
     });
     if (!user) {
-      console.log("work?");
       res.json({ success: false }).status(204);
       return;
     }
     const match = await bcrypt.compare(password, user.password);
-    console.log(match);
     if (match) {
       const jwtSecretKey = process.env.JWT_SECRET_KEY;
       const data = {
@@ -66,7 +64,6 @@ router.post("/login-user", async (req, res) => {
     }
     res.json({ success: false }).status(204);
   } catch (error) {
-    console.log(error);
     res.json({ success: error }).status(500);
   }
 });
